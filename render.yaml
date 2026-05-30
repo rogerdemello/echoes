@@ -15,16 +15,13 @@ services:
     envVars:
       - key: MURF_AI_API_KEY
         sync: false
-      - key: AZURE_OPENAI_API_KEY
+      # Google Gemini powers all text + audio AI (story, dialogue, emotion,
+      # Memory DNA, translation, transcription).
+      - key: GEMINI_API_KEY
         sync: false
-      - key: AZURE_OPENAI_ENDPOINT
-        sync: false
-      - key: AZURE_OPENAI_DEPLOYMENT_NAME
-        sync: false
-      - key: AZURE_OPENAI_API_VERSION
-        sync: false
-      - key: AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME
-        sync: false
+      # Optional model override (default in code: gemini-2.5-flash)
+      # - key: GEMINI_MODEL
+      #   value: gemini-2.0-flash
       - key: NEXT_PUBLIC_APP_URL
         sync: false
       - key: HOSTNAME

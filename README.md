@@ -174,7 +174,7 @@ as a Docker container — a `Dockerfile` and `render.yaml` blueprint are include
    git push -u origin main
    ```
 2. render.com → **New + → Blueprint** → select the repo (it reads `render.yaml`).
-3. Add the secret env vars (`MURF_AI_API_KEY`, `AZURE_OPENAI_*`, `NEXT_PUBLIC_APP_URL`).
+3. Add the secret env vars (`MURF_AI_API_KEY`, `GEMINI_API_KEY`, `NEXT_PUBLIC_APP_URL`).
 4. The persistent disk at `/app/data` keeps stories, mixed audio, and photos across
    deploys — important because raw Murf URLs expire, but the locally mixed MP3
    (served from `/api/audio`) does not. Health check: `/api/health`.
