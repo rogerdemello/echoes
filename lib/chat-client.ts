@@ -1,53 +1,69 @@
-import { AzureOpenAI } from "openai";
+import { geminiGenerate, getGeminiConfig } from "./gemini";
 
-export function getChatClient(): {
-  client: AzureOpenAI;
+/**
+ * Minimal OpenAI-compatible chat client backed by Gemini. Keeps the existing
+ * `chat.client.chat.completions.create(...)` call sites (openai.ts, emotion.ts,
+ * memory-dna.ts, translate.ts) working unchanged while running on Gemini.
+ */
+
+export interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+export interface ChatCreateOptions {
+  model?: string;
+  messages: ChatMessage[];
+  response_format?: { type: string };
+  temperature?: number;
+}
+
+export interface ChatCompletion {
+  choices: { message: { content: string | null } }[];
+}
+
+export interface ChatClient {
+  client: {
+    chat: {
+      completions: {
+        create: (opts: ChatCreateOptions) => Promise<ChatCompletion>;
+      };
+    };
+  };
   model: string;
-} | null {
-  const azureKey = process.env.AZURE_OPENAI_API_KEY;
-  const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT;
-  const azureDeployment = process.env.AZURE_OPENAI_DEPLOYMENT_NAME;
+}
 
-  if (!azureKey || !azureEndpoint || !azureDeployment) {
-    return null;
-  }
+export function getChatClient(): ChatClient | null {
+  const cfg = getGeminiConfig();
+  if (!cfg) return null;
 
   return {
-    client: new AzureOpenAI({
-      apiKey: azureKey,
-      endpoint: azureEndpoint.replace(/\/$/, ""),
-      apiVersion:
-        process.env.AZURE_OPENAI_API_VERSION ?? "2024-08-01-preview",
-      deployment: azureDeployment,
-    }),
-    model: azureDeployment,
+    model: cfg.model,
+    client: {
+      chat: {
+        completions: {
+          create: async (opts: ChatCreateOptions): Promise<ChatCompletion> => {
+            const system = opts.messages
+              .filter((m) => m.role === "system")
+              .map((m) => m.content)
+              .join("\n\n");
+            const userText = opts.messages
+              .filter((m) => m.role !== "system")
+              .map((m) => m.content)
+              .join("\n\n");
+
+            const text = await geminiGenerate({
+              parts: [{ text: userText }],
+              system: system || undefined,
+              json: opts.response_format?.type === "json_object",
+              temperature: opts.temperature,
+              model: opts.model,
+            });
+
+            return { choices: [{ message: { content: text } }] };
+          },
+        },
+      },
+    },
   };
-}
-
-export function getWhisperClient(): AzureOpenAI | null {
-  const azureKey = process.env.AZURE_OPENAI_API_KEY;
-  const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT;
-  const whisperDeployment =
-    process.env.AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME ??
-    process.env.AZURE_OPENAI_WHISPER_DEPLOYMENT;
-
-  if (!azureKey || !azureEndpoint || !whisperDeployment) {
-    return null;
-  }
-
-  return new AzureOpenAI({
-    apiKey: azureKey,
-    endpoint: azureEndpoint.replace(/\/$/, ""),
-    apiVersion:
-      process.env.AZURE_OPENAI_API_VERSION ?? "2024-08-01-preview",
-    deployment: whisperDeployment,
-  });
-}
-
-export function getWhisperModel(): string {
-  return (
-    process.env.AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME ??
-    process.env.AZURE_OPENAI_WHISPER_DEPLOYMENT ??
-    "whisper"
-  );
 }

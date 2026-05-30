@@ -1,4 +1,3 @@
-import type { AzureOpenAI } from "openai";
 import { getChatClient } from "./chat-client";
 import { LANGUAGES } from "./constants";
 import {
@@ -21,7 +20,7 @@ Write only in French — no English.`,
 Write only in German — no English.`,
 };
 
-type ChatBundle = { client: AzureOpenAI; model: string };
+type ChatBundle = NonNullable<ReturnType<typeof getChatClient>>;
 
 async function runTranslation(
   text: string,

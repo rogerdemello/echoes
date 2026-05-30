@@ -37,3 +37,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/sample-speech-1m.mp3

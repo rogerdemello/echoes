@@ -6,10 +6,12 @@ import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 interface HealthServices {
   murf: boolean;
   storyAI: boolean;
+  gemini?: boolean;
+  transcription?: boolean;
+  /** @deprecated legacy Azure health payload */
   azureOpenAI?: boolean;
+  /** @deprecated legacy Azure health payload */
   azureWhisper?: boolean;
-  /** @deprecated legacy health payload */
-  whisper?: boolean;
 }
 
 export function ServiceHealth() {
@@ -37,9 +39,8 @@ export function ServiceHealth() {
 
   const items = [
     { label: "Murf Voice", ok: services.murf },
-    { label: "Story AI", ok: services.storyAI },
-    { label: "Azure OpenAI", ok: services.azureOpenAI ?? services.storyAI },
-    { label: "Whisper", ok: services.azureWhisper ?? services.whisper ?? false },
+    { label: "Gemini AI", ok: services.gemini ?? services.storyAI },
+    { label: "Voice Transcription", ok: services.transcription ?? services.gemini ?? false },
   ];
 
   return (

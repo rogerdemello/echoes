@@ -57,22 +57,21 @@ Open [http://localhost:3000](http://localhost:3000)
 # Required — Murf voice synthesis
 MURF_AI_API_KEY=your_murf_api_key
 
-# Required for story enhancement, translation, emotion & Memory DNA (Azure only)
-AZURE_OPENAI_API_KEY=your_azure_api_key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4o
-AZURE_OPENAI_API_VERSION=2024-12-01-preview
+# Required — Google Gemini powers ALL text + audio AI: story enhancement,
+# dual-voice dialogue, emotion, Memory DNA, translation, and transcription.
+# Free key: https://aistudio.google.com
+GEMINI_API_KEY=your_gemini_api_key
 
-# Optional — voice-note transcription
-AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME=whisper
+# Optional — override the model (default: gemini-2.5-flash)
+# GEMINI_MODEL=gemini-2.0-flash
 
 # Optional — absolute base URL for share/OG links in production
 NEXT_PUBLIC_APP_URL=https://your-deployment.example.com
 ```
 
-> The app uses **Azure OpenAI only** — there is no OpenAI.com fallback. Every AI
-> call degrades gracefully (local templates) if Azure is unreachable, so the demo
-> never hard-fails.
+> All AI runs on **Gemini** (multimodal — one model handles text *and* audio
+> transcription). Every AI call degrades gracefully (local templates / heuristics)
+> if Gemini is unreachable, so the demo never hard-fails.
 
 ## Pages & Workflows
 
@@ -190,7 +189,7 @@ docker run -p 3000:3000 --env-file .env echoes
 
 - Next.js 14 (standalone) · TypeScript · Tailwind CSS · Framer Motion · React Three Fiber
 - **Murf API (GEN2 voices)** — solo narration + dual-voice stitching
-- Azure OpenAI (story, dialogue, emotion, translation, Memory DNA)
+- **Google Gemini** (multimodal) — story, dialogue, emotion, translation, Memory DNA, audio transcription
 - ffmpeg (`ffmpeg-static`) — emotion-tuned ambient mix + multi-clip dialogue stitch
 - Local JSON storage (`data/stories.json`) + Docker/Render deploy
 
