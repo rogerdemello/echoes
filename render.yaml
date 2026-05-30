@@ -1,0 +1,35 @@
+# Render Blueprint for Echoes.
+# Deploy: push this repo to GitHub, then "New + > Blueprint" on render.com and
+# point it at the repo. Set the secret env vars (sync:false) in the dashboard.
+#
+# The persistent disk at /app/data keeps stories.json, mixed audio, and uploaded
+# photos across restarts/deploys — essential because Murf audio URLs expire while
+# the locally mixed MP3 (served from /api/audio) does not.
+services:
+  - type: web
+    name: echoes
+    runtime: docker
+    plan: starter # persistent disks require a paid instance
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: MURF_AI_API_KEY
+        sync: false
+      - key: AZURE_OPENAI_API_KEY
+        sync: false
+      - key: AZURE_OPENAI_ENDPOINT
+        sync: false
+      - key: AZURE_OPENAI_DEPLOYMENT_NAME
+        sync: false
+      - key: AZURE_OPENAI_API_VERSION
+        sync: false
+      - key: AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: HOSTNAME
+        value: 0.0.0.0
+    disk:
+      name: echoes-data
+      mountPath: /app/data
+      sizeGB: 1

@@ -1,0 +1,17 @@
+node_modules
+.next
+npm-debug.log
+build.log
+.git
+.gitignore
+.env
+.env*.local
+data/stories.json
+data/audio/*
+data/uploads/*
+!data/audio/.gitkeep
+!data/uploads/.gitkeep
+README.md
+summary.txt
+Dockerfile
+.dockerignore

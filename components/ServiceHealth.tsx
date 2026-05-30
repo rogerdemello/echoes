@@ -1,0 +1,66 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+
+interface HealthServices {
+  murf: boolean;
+  storyAI: boolean;
+  azureOpenAI?: boolean;
+  azureWhisper?: boolean;
+  /** @deprecated legacy health payload */
+  whisper?: boolean;
+}
+
+export function ServiceHealth() {
+  const [services, setServices] = useState<HealthServices | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => setServices(d.services))
+      .catch(() => setServices(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 rounded-full glass px-4 py-2 text-xs text-cinema-muted">
+        <Loader2 className="h-3 w-3 animate-spin" />
+        Checking services...
+      </div>
+    );
+  }
+
+  if (!services) return null;
+
+  const items = [
+    { label: "Murf Voice", ok: services.murf },
+    { label: "Story AI", ok: services.storyAI },
+    { label: "Azure OpenAI", ok: services.azureOpenAI ?? services.storyAI },
+    { label: "Whisper", ok: services.azureWhisper ?? services.whisper ?? false },
+  ];
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {items.map((item) => (
+        <span
+          key={item.label}
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs ${
+            item.ok
+              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+              : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+          }`}
+        >
+          {item.ok ? (
+            <CheckCircle2 className="h-3 w-3" />
+          ) : (
+            <XCircle className="h-3 w-3" />
+          )}
+          {item.label}
+        </span>
+      ))}
+    </div>
+  );
+}

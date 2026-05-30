@@ -1,0 +1,388 @@
+================================================================================
+ECHOES — PROJECT SUMMARY
+Murf AI Buildathon · Memory Preservation Platform
+================================================================================
+
+Tagline:     "Your memories deserve a voice."
+Positioning: "Preserve emotions, not just memories."
+Powered by:  Murf AI (voice) · Azure OpenAI (storytelling) · Next.js 14
+
+================================================================================
+1. VISION & BIG IDEA
+================================================================================
+
+Echoes is NOT a text-to-speech tool or generic AI assistant. It is a digital
+memory-preservation platform where emotionally intelligent voice AI turns
+ordinary moments into cinematic narrated experiences.
+
+Today people store photos, videos, chats, and voice notes — but they rarely
+preserve emotions, atmosphere, storytelling, and human warmth. Echoes fills
+that gap by combining:
+
+  • Netflix-style documentary narration
+  • Spotify Wrapped–level emotional framing
+  • Apple Memories nostalgia
+  • Murf AI as the emotional engine (voice is the product, not a feature)
+
+Judges and users should feel something — not evaluate a productivity wrapper.
+
+Opening line for demos:
+  "Photos preserve how moments looked. Echoes preserves how they felt."
+
+Shareable hook:
+  "Make your life sound like a Netflix documentary."
+
+================================================================================
+2. WHAT WAS BUILT (CURRENT MVP)
+================================================================================
+
+2.1 USER-FACING PAGES
+---------------------
+  /                 Landing: hero, vision, how-it-works, social proof, features,
+                    positioning (NOT vs INSTEAD), recent echoes
+  /create           Create a memory (text or voice note, photo, style, emotion,
+                    language, narrator)
+  /story/[id]       Full playback experience (player, storybook, Memory DNA,
+                    export, bilingual, voice controls, multilingual)
+  /share/[id]       Public share page with OG metadata
+  /gallery          List all saved stories (with photo thumbnails)
+  /demo             One-click judge demo (grandfather train memory + autoplay)
+
+2.2 CORE USER JOURNEY (5 STEPS)
+-------------------------------
+  1. Input a memory        — text, voice note (Whisper), optional photo
+  2. AI story enhancement  — Azure OpenAI rewrites as cinematic narration
+  3. Emotion intelligence  — detect tone; maps to Murf style + ambient music
+  4. Murf voice generation — native voices per language (GEN2 API)
+  5. Cinematic playback    — subtitles, waveform, Ken Burns photo, ambient audio,
+                             share link, storybook timeline
+
+2.3 FEATURES IMPLEMENTED
+------------------------
+  MUST-HAVE (MVP)
+    [x] Text memory input
+    [x] Voice note upload → Azure Whisper transcription
+    [x] AI story enhancement (documentary, cinematic, bedtime, motivational)
+    [x] Emotion detection (nostalgic, calm, hopeful, dramatic, joyful)
+    [x] Murf voice synthesis with live voice catalog resolution
+    [x] Cinematic audio player (play/pause, progress, sentence subtitles)
+    [x] Ambient emotion-matched background music (Web Audio)
+    [x] Shareable public links (/share/[slug])
+    [x] Story gallery
+
+  ENHANCED (BEYOND BASIC MVP)
+    [x] Multilingual dubbing (en, hi, es, fr, de) — translate + native Murf voice
+    [x] Hindi fix: Devanagari text + native voice (not English + accent)
+    [x] Photo upload → Ken Burns cinematic backdrop on playback
+    [x] Storybook timeline — chapter-by-chapter sync with narration
+    [x] Memory DNA — AI insight into emotional themes in your stories
+    [x] Bilingual side-by-side player when translations exist
+    [x] Judge export pack (txt, json, mp3 download, demo script copy)
+    [x] Service health badges on create page
+    [x] Global toast notifications
+    [x] Recent echoes on home page
+    [x] Autoplay after story creation (?autoplay=1)
+    [x] Custom 404 page
+    [x] Live demo page for judges
+    [x] Azure content-filter safe prompts + retry logic (no OpenAI.com fallback)
+
+  SHIPPED — HEADLINE DIFFERENTIATOR
+    [x] Dual-Voice Legacy Mode ("a conversation across time") — two distinct Murf
+        voices alternate in one stitched narration (e.g. Me <-> Grandfather).
+        AI writes the dialogue, each line is voiced with its speaker's persona,
+        clips are ffmpeg-stitched with the emotion ambient bed, and playback shows
+        synced left/right speaker bubbles. One-click at /demo (dual-voice demo).
+    [x] Docker + Render deploy (standalone output, persistent /app/data disk) for
+        a live public URL.
+
+  NOT YET BUILT (see Section 6 — Future Advancements)
+    [ ] Video / MP4 / Instagram reel export
+    [ ] Supabase or cloud database
+    [ ] Future-self capsules, memory map
+    [ ] WhatsApp screenshot / email ingestion
+    [ ] AI soundtrack selection beyond simple ambient tones
+
+================================================================================
+3. TECH STACK
+================================================================================
+
+  Frontend:     Next.js 14 (App Router), React 18, TypeScript
+  Styling:      Tailwind CSS, Framer Motion
+  Icons:        Lucide React
+  Voice:        Murf API (GEN2 speech synthesis)
+  AI:           Azure OpenAI only (gpt-4o deployment via AzureOpenAI SDK)
+  Transcription: Azure OpenAI Whisper deployment
+  Storage:      Local JSON file (data/stories.json)
+  Photos:       Local files (data/uploads/) served via /api/photos/[name]
+  IDs:          uuid v4, shareSlug = first 8 chars of id
+
+  Dev notes:
+    - System fonts (no Google Fonts — avoids Windows load failures)
+    - Webpack poll watch in next.config.mjs (path with spaces on Windows)
+    - Run single dev server on port 3000; clear .next if ChunkLoadError
+
+================================================================================
+4. PROJECT STRUCTURE (KEY FILES)
+================================================================================
+
+  app/
+    page.tsx                    Home / landing
+    create/page.tsx             Story creation
+    story/[id]/page.tsx         Story playback hub
+    share/[id]/page.tsx         Public share
+    share/[id]/layout.tsx       OG meta for shares
+    gallery/page.tsx            All stories
+    demo/page.tsx               Judge one-click demo
+    not-found.tsx               Branded 404
+    api/
+      stories/route.ts          GET list, POST create (full pipeline)
+      stories/[id]/route.ts     GET/PATCH/DELETE single story
+      stories/[id]/translate/   POST multilingual dubbing
+      generate-voice/route.ts   POST regenerate Murf audio
+      enhance-story/route.ts    POST preview enhancement only
+      detect-emotion/route.ts   POST emotion from text
+      transcribe/route.ts       POST voice note → text
+      upload-photo/route.ts       POST photo (multipart)
+      photos/[name]/route.ts    GET serve uploaded image
+      memory-dna/route.ts       POST Memory DNA analysis
+      voices/route.ts           GET Murf voice list (cached 1h)
+      health/route.ts             GET service status
+
+  components/
+    Hero, FeatureGrid, HowItWorks, VisionSection, SocialProof, Positioning
+    CreateStoryForm, StoryPlayer, StoryTimeline, MemoryDNA, ExportPanel
+    MultilingualPanel, BilingualPlayer, VoiceControls, RecentEchoes
+    ServiceHealth, ToastProvider, Navbar, StorySkeleton, LanguageHint
+
+  lib/
+    types.ts                    Story, Emotion, LanguageCode, etc.
+    stories.ts                  CRUD for data/stories.json
+    openai.ts                   enhanceStory + fallbackEnhance
+    emotion.ts                  detectEmotion + heuristics
+    translate.ts                translateStory (Azure, multi-retry)
+    memory-dna.ts               analyzeMemoryDNA
+    murf.ts                     generateSpeech
+    voice-catalog.ts            Runtime Murf voice resolution (cached)
+    voice-styles.ts             Emotion → Murf style mapping
+    narration.ts                ensureNarrationLanguage (Hindi fix)
+    azure-safety.ts               Content-filter safe prompts
+    chat-client.ts              Azure-only OpenAI client
+    story-pages.ts              Split narration into storybook chapters
+    export-story.ts             Client-side judge export helpers
+    emotion-theme.ts            Player gradients per emotion
+    use-ambient-audio.ts          Web Audio ambient loops
+    constants.ts                Voices, languages, demo memories
+
+  data/
+    stories.json                All stories (gitignored in dev)
+    uploads/                    User photos (gitignored)
+
+================================================================================
+5. DATA MODEL (Story)
+================================================================================
+
+  Story {
+    id, shareSlug, title
+    originalText          — raw user memory
+    enhancedStory         — AI cinematic narration
+    audioUrl              — Murf MP3 URL (may expire)
+    language              — en | hi | es | fr | de
+    emotion               — nostalgic | calm | hopeful | dramatic | joyful
+    storyStyle            — documentary | cinematic | bedtime | motivational
+    narrator              — documentary | trailer | grandmother | podcast | bedtime
+    inputType             — text | voice
+    detectedEmotion       — if auto-detect was used
+    translations[]        — { language, enhancedStory, audioUrl, createdAt }
+    photoUrl              — optional /api/photos/... path
+    createdAt
+  }
+
+================================================================================
+6. API PIPELINE (CREATE STORY)
+================================================================================
+
+  POST /api/stories
+    1. Validate originalText
+    2. Optional: autoDetectEmotion → Azure OpenAI
+    3. enhanceStory(text, style, emotion, language) → Azure OpenAI
+    4. ensureNarrationLanguage(enhancedStory, language) → translate if non-English
+    5. generateSpeech(...) → Murf API
+    6. createStory(...) → write to data/stories.json
+    Returns: { story, voiceError? }
+
+  Murf voice IDs (examples, resolved live from API):
+    en-US-natalie, hi-IN-shweta, es-ES-carla, fr-FR-justine, de-DE-lia
+
+================================================================================
+7. ENVIRONMENT VARIABLES
+================================================================================
+
+  Required:
+    MURF_AI_API_KEY
+
+  Required for full AI features (story, translation, emotion, Memory DNA):
+    AZURE_OPENAI_API_KEY
+    AZURE_OPENAI_ENDPOINT
+    AZURE_OPENAI_DEPLOYMENT_NAME          (e.g. gpt-4o)
+    AZURE_OPENAI_API_VERSION              (e.g. 2024-08-01-preview)
+
+  Optional (voice notes):
+    AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME  (e.g. whisper)
+
+  Note: App uses Azure OpenAI ONLY — no OpenAI.com fallback.
+
+================================================================================
+8. KNOWN ISSUES & MITIGATIONS
+================================================================================
+
+  AZURE CONTENT FILTER
+    Wholesome family memories (grandfather, "last conversation", loss) can
+    trigger Azure Responsible AI policy (content_filter / 400).
+    Mitigations in code:
+      - G-rated system prompts (lib/azure-safety.ts)
+      - wrapUserMemory() framing on all user content
+      - Retry with gentler/shorter prompts on same Azure deployment
+      - fallbackEnhance() local template if enhancement fails
+      - Memory DNA returns emotion-based defaults if blocked
+      - generate-voice returns voiceError (not 500) if translation blocked
+
+  MURF AUDIO URLS
+    Temporary URLs; may expire. Regenerate voice from story page if needed.
+
+  LOCAL STORAGE
+    stories.json is single-file, not suitable for production scale.
+
+  WINDOWS DEV
+    Project path has spaces — use one dev server, delete .next if chunk errors.
+
+  HINDI / MULTILINGUAL
+    Requires Azure translation to Devanagari BEFORE Murf; English text +
+    hi-IN locale produces Indian-accent English (bug that was fixed).
+
+================================================================================
+9. DEMO SCRIPT (JUDGES)
+================================================================================
+
+  1. Say: "Photos preserve how moments looked. Echoes preserves how they felt."
+
+  2. Open /demo OR /create → Run live demo / paste memory
+
+  3. Recommended settings:
+       Story style: Netflix Documentary
+       Emotion: Nostalgic (or auto-detect)
+       Language: English (then show Hindi via Multilingual panel)
+
+  4. Let playback finish — do not interrupt. Silence after narration is powerful.
+
+  5. Show on story page:
+       - Storybook timeline (chapter sync)
+       - Memory DNA insight
+       - Multilingual → Generate Hindi
+       - Copy share link / Judge export pack
+
+  6. Close: "We built emotional memory preservation — not another AI assistant."
+
+  Default judge memory (lib/constants.ts JUDGE_DEMO_MEMORY):
+    "The last conversation I had with my grandfather was during a train ride
+     home. He pointed at the fields rushing past..."
+
+================================================================================
+10. COMMANDS
+================================================================================
+
+  npm install
+  npm run dev          → http://localhost:3000
+  npm run build        → production build
+  npm run start        → production server
+  npm run lint         → ESLint
+
+================================================================================
+11. POSITIONING (FOR PITCH / README)
+================================================================================
+
+  NOT:
+    - AI assistant
+    - Text-to-speech app
+    - Voice wrapper on ChatGPT
+
+  INSTEAD:
+    - Memory storytelling platform
+    - Emotional AI product
+    - Consumer media experience
+    - Voice-native storytelling engine
+
+  Business angles: consumers (memory preservation), families (legacy),
+  creators (narrated content), weddings, memorials.
+
+================================================================================
+12. FUTURE ADVANCEMENTS (ROADMAP)
+================================================================================
+
+  PHASE 2 — RICHER MEDIA & UX
+  ---------------------------
+  • Video / MP4 export — FFmpeg pipeline: photo Ken Burns + Murf audio +
+    burned-in subtitles → Instagram reels, TikTok, YouTube Shorts
+  • Animated caption styles (karaoke, word-highlight)
+  • Timeline gallery mode — visual history of all echoes
+  • Photo-to-story AI — describe atmosphere from image alone (vision model)
+  • Improved OG share images — dynamic preview cards with waveform art
+
+  PHASE 3 — PLATFORM & SCALE
+  --------------------------
+  • Supabase (or Postgres) — replace stories.json; auth; user accounts
+  • Persistent media storage — S3/Azure Blob for audio and photos
+  • Murf URL proxy — server-side audio cache so downloads do not break
+  • Rate limiting and API keys per user
+
+  PHASE 4 — EMOTIONAL PRODUCT FEATURES (FROM VISION DOC)
+  ----------------------------------------------------
+  • Memory Map — pin stories to cities/countries on interactive globe
+  • Family Legacy Mode — multiple relatives contribute memories → merged
+    family documentary with multiple Murf voices
+  • Future Self Capsules — schedule replay in 1 year / 5 years
+  • Dual Narration Mode — parent/child or past/future self alternating lines
+    (strong demo differentiator)
+  • Memory DNA Engine v2 — cross-story analysis: "Your life themes are
+    resilience, family, and hope" across all echoes
+  • AI Soundtrack Matching — piano / orchestral / guitar by emotion (beyond
+    current ambient Web Audio)
+
+  PHASE 5 — INPUT & DISTRIBUTION
+  ------------------------------
+  • WhatsApp screenshot / old email import
+  • Journal file upload (.txt, .docx)
+  • Podcast clip export
+  • Embeddable player widget for blogs
+  • Mobile PWA with offline playback of downloaded packs
+
+  PHASE 6 — ENTERPRISE / MONETIZATION
+  -----------------------------------
+  • Wedding & memorial packages
+  • White-label for senior living / hospice memory programs
+  • API for third-party apps ("Echoes as a Service")
+  • Murf voice marketplace integration per locale
+
+  TECHNICAL DEBT TO ADDRESS
+  -------------------------
+  • Update README.md to match Azure-only .env (remove OpenAI fallback mentions)
+  • Structured logging and error codes for content_filter
+  • Unit tests for narration language detection and story-pages split
+  • E2E test: create → play → translate → share
+  • Azure content filter: optional deployment with relaxed filters for
+    creative writing use case (admin configuration)
+
+================================================================================
+13. QUICK REFERENCE — ROUTES
+================================================================================
+
+  Pages:     /  /create  /story/[id]  /share/[id]  /gallery  /demo
+  Health:    GET /api/health
+  Create:    POST /api/stories
+  Translate: POST /api/stories/[id]/translate
+  Voice:     POST /api/generate-voice
+  Photo:     POST /api/upload-photo
+
+================================================================================
+END OF SUMMARY
+Generated for Murf AI Buildathon · Echoes
+================================================================================
