@@ -1,13 +1,29 @@
 import type { Story } from "./types";
 
-function downloadBlob(filename: string, content: string, mime: string) {
-  const blob = new Blob([content], { type: mime });
+/**
+ * Trigger a browser download for a Blob. The anchor must be in the DOM and the
+ * object URL must NOT be revoked synchronously — revoking in the same tick as
+ * click() cancels the download before the browser reads it, producing an empty
+ * file (this is what broke the MP3 export).
+ */
+function saveBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  a.rel = "noopener";
+  a.style.display = "none";
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  // Defer cleanup so the download has time to start reading the blob.
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    a.remove();
+  }, 4000);
+}
+
+function downloadBlob(filename: string, content: string, mime: string) {
+  saveBlob(new Blob([content], { type: mime }), filename);
 }
 
 export function getShareUrl(story: Story): string {
@@ -55,12 +71,8 @@ export async function downloadAudioFile(
   const res = await fetch(audioUrl);
   if (!res.ok) throw new Error("Could not fetch audio");
   const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `echoes-${story.shareSlug}.mp3`;
-  a.click();
-  URL.revokeObjectURL(url);
+  if (!blob.size) throw new Error("Audio file is empty");
+  saveBlob(blob, `echoes-${story.shareSlug}.mp3`);
 }
 
 export function getDemoScript(story: Story, shareUrl: string): string {
