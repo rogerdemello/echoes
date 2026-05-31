@@ -215,6 +215,85 @@ docker build -t echoes .
 docker run -p 3000:3000 --env-file .env echoes
 ```
 
+## Architecture
+
+Echoes is a single Next.js app: a React front-end, a set of Node API routes, a
+`lib/` domain layer, and three things it talks to — **Murf** (voice), **Google
+Gemini** (all text + audio AI), and **ffmpeg** (audio mixing) — with stories and
+audio persisted as plain files on disk.
+
+```mermaid
+graph TD
+  subgraph Browser["Browser — Next.js App Router (React)"]
+    UI["Pages: / · /create · /story · /share · /gallery · /constellation · /demo"]
+    PLAYERS["StoryPlayer · DuetPlayer · Constellation (React Three Fiber)"]
+  end
+
+  subgraph Server["Next.js Server (Node) — API routes"]
+    R1["/api/stories — create pipeline + list"]
+    R2["/api/stories/[id] — get · update · delete · translate"]
+    R3["/api/transcribe · enhance-story · detect-emotion · memory-dna"]
+    R4["/api/generate-voice · voices · audio · photos · health"]
+  end
+
+  subgraph Lib["lib/ — domain logic"]
+    PIPE["story-pipeline.ts — orchestrates a create"]
+    GEM["gemini.ts · chat-client.ts · transcribe.ts"]
+    OAI["openai.ts — story + dialogue writers"]
+    MURF["murf.ts — voice synthesis"]
+    MIX["audio-mix.ts · dialogue-mix.ts — ffmpeg"]
+    STORE["stories.ts — JSON store"]
+  end
+
+  subgraph External["External APIs + Disk"]
+    GAPI["Google Gemini API<br/>(text + audio, multimodal)"]
+    MAPI["Murf API<br/>(GEN2 voices)"]
+    FF["ffmpeg-static binary"]
+    FS["data/ — stories.json · audio/ · uploads/"]
+  end
+
+  UI --> R1 & R2 & R3
+  PLAYERS --> R4
+  R1 --> PIPE
+  PIPE --> OAI & MURF & MIX & STORE
+  R3 --> GEM & OAI
+  R4 --> MURF & STORE
+  OAI --> GEM
+  GEM --> GAPI
+  MURF --> MAPI
+  MIX --> FF
+  MIX --> FS
+  STORE --> FS
+```
+
+## Workflow — how a memory becomes a story
+
+One `POST /api/stories` runs the whole pipeline. The **solo** and **dual-voice**
+paths diverge at the writing step and rejoin at save. Every AI call has a local
+fallback, so a missing key or network blip never hard-fails.
+
+```mermaid
+flowchart TD
+  A["Memory — text or voice note"] --> B{Voice note?}
+  B -- yes --> C["Gemini transcribes to text"]
+  B -- no --> D["Auto-detect emotion (Gemini)"]
+  C --> D
+  D --> E{Mode?}
+  E -- Solo --> F["Gemini writes cinematic narration"]
+  E -- Duet --> G["Gemini writes alternating A/B dialogue"]
+  F --> H["Murf -> narration MP3"]
+  G --> I["Murf -> one clip per line (2 voices)"]
+  H --> J["ffmpeg: blend emotion-tuned ambient bed"]
+  I --> K["ffmpeg: stitch clips + ambient + gaps"]
+  J --> L["Memory DNA (Gemini)"]
+  K --> L
+  L --> M["Save -> stories.json + audio file"]
+  M --> N["Playback: synced text · translate · share · export"]
+```
+
+> 📹 **Recording a demo?** A full line-by-line video script (with a sample memory
+> and every feature in order) lives in [`docs/demo-script.md`](docs/demo-script.md).
+
 ## Tech Stack
 
 - Next.js 14 (standalone) · TypeScript · Tailwind CSS · Framer Motion · React Three Fiber
