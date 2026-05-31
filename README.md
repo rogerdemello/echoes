@@ -31,7 +31,7 @@ Try it instantly: open `/demo` → **Run dual-voice demo**, or `/create?duet=1`.
 - 🎚️ **Cinematic ambient mix** — emotion-tuned pad blended under narration (ffmpeg)
 - 🪐 **Memory Constellation** — 3D interactive map of every memory (React Three Fiber)
 - 🧬 **Memory DNA** — AI insight into the emotional themes across your stories
-- 🎤 **Voice-note input** — speak your memory; Whisper transcribes it
+- 🎤 **Voice-note input** — speak your memory; Gemini transcribes it
 - 🔗 **Share + export** — public links, MP3/text/JSON download, WhatsApp share
 
 ## Quick Start
@@ -42,7 +42,7 @@ git clone https://github.com/rogerdemello/echoes.git
 cd echoes
 
 # 2. Configure secrets
-cp .env.example .env        # then fill in your Murf + Azure keys
+cp .env.example .env        # then fill in your Murf + Gemini keys
 
 # 3. Install & run
 npm install
@@ -90,7 +90,7 @@ NEXT_PUBLIC_APP_URL=https://your-deployment.example.com
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/api/health` | Service status (Murf, Azure, Whisper) |
+| `GET` | `/api/health` | Service status (Murf, Gemini, transcription) |
 | `GET` | `/api/voices` | List Murf voices |
 | `POST` | `/api/enhance-story` | AI story enhancement only |
 | `POST` | `/api/detect-emotion` | Detect emotion from memory text |
