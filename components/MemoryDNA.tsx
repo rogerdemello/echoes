@@ -3,32 +3,70 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Dna, Sparkles } from "lucide-react";
-import type { Emotion, Story } from "@/lib/types";
+import type { Story } from "@/lib/types";
 import type { MemoryDNA as MemoryDNAResult } from "@/lib/memory-dna";
 
 interface MemoryDNAProps {
   story: Story;
 }
 
+// Session caches so the fallback Gemini call runs at most once per story —
+// survives StrictMode double-mounts and re-navigation.
+const dnaCache = new Map<string, MemoryDNAResult | null>();
+const dnaInflight = new Map<string, Promise<MemoryDNAResult | null>>();
+
 export function MemoryDNA({ story }: MemoryDNAProps) {
-  const [dna, setDna] = useState<MemoryDNAResult | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Most stories already carry DNA computed at creation — use it instantly.
+  const cached = story.memoryDna ?? dnaCache.get(story.id) ?? null;
+  const [dna, setDna] = useState<MemoryDNAResult | null>(cached);
+  const [loading, setLoading] = useState(!cached);
 
   useEffect(() => {
-    fetch("/api/memory-dna", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        originalText: story.originalText,
-        enhancedStory: story.enhancedStory,
-        emotion: story.detectedEmotion ?? story.emotion,
-      }),
-    })
-      .then((r) => r.json())
-      .then((d) => setDna(d.dna ?? null))
-      .catch(() => setDna(null))
-      .finally(() => setLoading(false));
-  }, [story.id, story.originalText, story.enhancedStory, story.emotion, story.detectedEmotion]);
+    // Already have it (persisted on the story, or cached this session).
+    if (story.memoryDna) {
+      setDna(story.memoryDna);
+      setLoading(false);
+      return;
+    }
+    if (dnaCache.has(story.id)) {
+      setDna(dnaCache.get(story.id) ?? null);
+      setLoading(false);
+      return;
+    }
+
+    // Legacy story without DNA — compute once, dedupe concurrent callers.
+    let cancelled = false;
+    setLoading(true);
+    let request = dnaInflight.get(story.id);
+    if (!request) {
+      request = fetch("/api/memory-dna", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          originalText: story.originalText,
+          enhancedStory: story.enhancedStory,
+          emotion: story.detectedEmotion ?? story.emotion,
+        }),
+      })
+        .then((r) => r.json())
+        .then((d) => (d.dna ?? null) as MemoryDNAResult | null)
+        .catch(() => null);
+      dnaInflight.set(story.id, request);
+    }
+
+    request.then((result) => {
+      dnaCache.set(story.id, result);
+      dnaInflight.delete(story.id);
+      if (!cancelled) {
+        setDna(result);
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [story.id, story.memoryDna, story.originalText, story.enhancedStory, story.emotion, story.detectedEmotion]);
 
   if (loading) {
     return (

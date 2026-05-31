@@ -16,17 +16,23 @@ export default function HomePage() {
       <FeatureGrid />
       <Positioning />
       <RecentEchoes />
-      <footer className="border-t border-white/5 py-12 text-center text-sm text-cinema-muted">
-        <p className="font-display text-xl text-cinema-text">
+
+      {/* last page of the album */}
+      <footer className="border-t border-cinema-text/10 bg-cinema-surface-2 py-20 text-center">
+        <p className="film-label justify-center">Fin</p>
+        <p className="mt-6 font-display text-4xl font-medium tracking-tight">
           Echoes
         </p>
-        <p className="mt-2 text-cinema-accent-light">
+        <p className="mt-3 font-display text-lg italic text-cinema-accent-light">
           Preserve emotions, not just memories.
         </p>
-        <p className="mt-4">
-          Powered by Murf AI · Emotional storytelling · Cinematic voice experiences
+        <div className="mx-auto mt-10 h-px w-16 bg-cinema-accent/40" />
+        <p className="mt-8 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-cinema-muted">
+          Powered by Murf AI · Emotional storytelling · Cinematic voice
         </p>
-        <p className="mt-2 opacity-60">Built for Murf AI Buildathon</p>
+        <p className="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-cinema-muted-dark">
+          Built for the Murf AI Buildathon
+        </p>
       </footer>
     </>
   );

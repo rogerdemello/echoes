@@ -27,7 +27,7 @@ export function RecentEchoes() {
   if (stories.length === 0) return null;
 
   return (
-    <section className="border-t border-white/5 bg-cinema-surface/30 py-16">
+    <section className="border-t border-cinema-accent/10 bg-cinema-surface/40 py-24">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -36,46 +36,52 @@ export function RecentEchoes() {
           className="flex items-end justify-between"
         >
           <div>
-            <h2 className="font-display text-2xl font-bold">Recent Echoes</h2>
-            <p className="mt-1 text-sm text-cinema-muted">
-              Pick up where you left off
-            </p>
+            <span className="film-label flex items-center gap-3">
+              <span className="text-cinema-accent">●</span> From the Archive
+            </span>
+            <h2 className="mt-4 font-display text-3xl font-light">Recent Echoes</h2>
           </div>
           <Link
             href="/gallery"
-            className="flex items-center gap-1 text-sm text-cinema-accent-light hover:underline"
+            className="group flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.15em] text-cinema-accent-light hover:text-cinema-accent"
           >
-            View all <ArrowRight className="h-4 w-4" />
+            View all
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {stories.map((story, i) => {
             const emotion = EMOTIONS.find((e) => e.id === story.emotion)?.label;
             const style = STORY_STYLES.find((s) => s.id === story.storyStyle)?.label;
             return (
               <motion.div
                 key={story.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
               >
                 <Link
                   href={`/story/${story.id}`}
-                  className="group block rounded-2xl glass p-5 transition-colors hover:border-cinema-accent/40"
+                  className="group block overflow-hidden rounded-lg glass-warm transition-colors hover:border-cinema-accent/40"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-medium line-clamp-2 group-hover:text-cinema-accent-light">
-                      {story.title}
-                    </h3>
+                  <div className="flex items-center justify-between border-b border-cinema-text/10 bg-cinema-surface-2 px-5 py-2">
+                    <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-cinema-accent-light">
+                      Reel {String(i + 1).padStart(2, "0")}
+                    </span>
                     {story.audioUrl && (
-                      <Play className="h-4 w-4 shrink-0 text-cinema-accent-light opacity-60 group-hover:opacity-100" />
+                      <Play className="h-3.5 w-3.5 text-cinema-accent-light opacity-60 group-hover:opacity-100" />
                     )}
                   </div>
-                  <p className="mt-2 text-xs text-cinema-muted">
-                    {style} · {emotion}
-                  </p>
+                  <div className="p-5">
+                    <h3 className="line-clamp-2 font-display text-lg leading-snug group-hover:text-cinema-accent-light">
+                      {story.title}
+                    </h3>
+                    <p className="mt-3 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-cinema-muted">
+                      {style} · {emotion}
+                    </p>
+                  </div>
                 </Link>
               </motion.div>
             );

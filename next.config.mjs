@@ -7,13 +7,23 @@ const nextConfig = {
     // ffmpeg.exe binary path stays valid at runtime (otherwise Next rewrites
     // the path into .next/server/vendor-chunks where the binary isn't copied).
     serverComponentsExternalPackages: ["ffmpeg-static", "fluent-ffmpeg"],
+    // Rewrite heavy barrel imports to direct paths so dev compiles far fewer
+    // modules (lucide-react + drei otherwise pull thousands of icon/helper files).
+    optimizePackageImports: ["lucide-react", "framer-motion", "@react-three/drei"],
   },
-  // Helps dev on Windows paths (especially folders with spaces)
   webpack: (config, { dev }) => {
     if (dev) {
       config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
+        // Don't recompile when the app writes generated audio/JSON into data/.
+        // That write-triggered rebuild loop was the main dev slowdown.
+        ignored: [
+          "**/node_modules/**",
+          "**/.next/**",
+          "**/.git/**",
+          "**/data/**",
+        ],
       };
     }
     return config;

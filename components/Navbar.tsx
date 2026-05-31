@@ -1,34 +1,39 @@
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
+
+const NAV = [
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/demo", label: "Demo" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/constellation", label: "Constellation" },
+  { href: "/#features", label: "Features" },
+];
 
 export function Navbar() {
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-cinema-bg/80 backdrop-blur-xl">
+    <header className="fixed top-0 z-50 w-full border-b border-cinema-text/10 bg-cinema-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2 font-display text-lg font-semibold">
-          <Sparkles className="h-5 w-5 text-cinema-accent-light" />
-          Echoes
+        <Link href="/" className="group flex items-baseline gap-2.5">
+          <span className="font-display text-2xl font-semibold tracking-tight">
+            Echoes
+          </span>
+          <span className="h-1.5 w-1.5 rounded-full bg-cinema-accent transition-transform group-hover:scale-125" />
         </Link>
-        <nav className="hidden items-center gap-8 text-sm text-cinema-muted md:flex">
-          <Link href="/#how-it-works" className="hover:text-cinema-text transition-colors">
-            How it works
-          </Link>
-          <Link href="/demo" className="hover:text-cinema-text transition-colors">
-            Demo
-          </Link>
-          <Link href="/gallery" className="hover:text-cinema-text transition-colors">
-            Gallery
-          </Link>
-          <Link href="/constellation" className="hover:text-cinema-text transition-colors">
-            Constellation
-          </Link>
-          <Link href="/#features" className="hover:text-cinema-text transition-colors">
-            Features
-          </Link>
+
+        <nav className="hidden items-center gap-7 md:flex">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-cinema-muted transition-colors hover:text-cinema-text"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
+
         <Link href="/create">
-          <Button size="sm">Create Your Story</Button>
+          <Button size="sm">Create</Button>
         </Link>
       </div>
     </header>

@@ -4,45 +4,64 @@ import { motion } from "framer-motion";
 
 export function VisionSection() {
   return (
-    <section className="relative overflow-hidden py-20">
-      <div className="absolute inset-0 bg-gradient-to-r from-cinema-accent/5 via-transparent to-cinema-accent/5" />
+    <section className="relative overflow-hidden border-t border-cinema-accent/10 py-28 md:py-36">
+      <div className="absolute inset-0 bg-hero-glow opacity-40" />
       <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <motion.p
+        <motion.span
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-sm font-medium uppercase tracking-[0.2em] text-cinema-accent-light"
+          className="film-label flex items-center justify-center gap-3"
         >
-          The big idea
-        </motion.p>
+          <span className="text-cinema-accent">CH. 01</span>
+          <span className="h-px w-8 bg-cinema-accent/40" />
+          The Premise
+        </motion.span>
+
+        {/* oversized opening quote mark */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 0.12, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="pointer-events-none mx-auto -mb-10 font-display text-[10rem] leading-none text-cinema-accent md:text-[14rem]"
+          aria-hidden
+        >
+          &ldquo;
+        </motion.div>
+
         <motion.blockquote
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="mt-6 font-display text-2xl font-semibold leading-relaxed md:text-3xl"
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display text-3xl font-light leading-[1.25] tracking-tight md:text-[2.7rem]"
         >
-          People store photos, videos, and chats — but they do not preserve
-          emotions, atmosphere, or human warmth.
+          People keep photos, videos, and chats — but none of them preserve the{" "}
+          <span className="italic text-cinema-accent-light">emotion</span>, the{" "}
+          <span className="italic text-cinema-accent-light">atmosphere</span>, the
+          warmth of being there.
         </motion.blockquote>
+
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 text-lg text-cinema-muted"
+          transition={{ delay: 0.15, duration: 0.5 }}
+          className="dropcap mx-auto mt-10 max-w-xl text-left text-lg leading-relaxed text-cinema-muted"
         >
-          Echoes converts ordinary memories into narrated cinematic experiences,
-          multilingual emotional stories, and voice-preserved digital legacies.
+          Echoes turns ordinary memories into narrated cinematic experiences —
+          multilingual, emotional, voice-preserved legacies.
         </motion.p>
+
         <motion.p
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-10 font-display text-xl italic text-cinema-accent-light"
+          transition={{ delay: 0.25, duration: 0.5 }}
+          className="film-label mt-12 justify-center"
         >
-          &ldquo;Make your life sound like a Netflix documentary.&rdquo;
+          Make your life sound like a documentary
         </motion.p>
       </div>
     </section>

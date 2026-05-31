@@ -9,32 +9,115 @@
 
   body {
     @apply bg-cinema-bg text-cinema-text font-body antialiased;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-optical-sizing: auto;
   }
 
   ::selection {
-    @apply bg-cinema-accent/40 text-white;
+    @apply bg-cinema-accent/30 text-cinema-text;
+  }
+}
+
+@layer components {
+  /* Archival catalog label — small-caps mono, wide tracking, for kickers. */
+  .film-label {
+    @apply flex items-center font-mono text-[0.7rem] uppercase tracking-[0.28em] text-cinema-accent-light;
   }
 }
 
 @layer utilities {
+  /* Deep-gold editorial emphasis. */
   .text-gradient {
-    @apply bg-gradient-to-r from-cinema-accent-light via-white to-cinema-accent bg-clip-text text-transparent;
+    @apply text-cinema-accent-light;
   }
 
+  /* Paper card — replaces the old dark glass. Solid, warm, soft shadow. */
   .glass {
-    @apply border border-white/10 bg-white/5 backdrop-blur-xl;
+    @apply border border-cinema-text/10 bg-cinema-surface;
+    box-shadow: 0 1px 2px rgba(42, 36, 28, 0.04), 0 8px 30px rgba(42, 36, 28, 0.07);
+  }
+  .glass-warm {
+    @apply border border-cinema-accent/25 bg-cinema-surface;
+    box-shadow: 0 1px 2px rgba(42, 36, 28, 0.04), 0 8px 30px rgba(42, 36, 28, 0.07);
+  }
+
+  /* Polaroid — white frame with a heavier bottom lip and a soft cast shadow. */
+  .polaroid {
+    @apply bg-white;
+    padding: 0.75rem 0.75rem 2.75rem;
+    box-shadow: 0 1px 1px rgba(42, 36, 28, 0.08), 0 10px 26px rgba(42, 36, 28, 0.14);
   }
 
   .glow-ring {
-    box-shadow: 0 0 60px rgba(124, 58, 237, 0.25);
+    box-shadow: 0 2px 6px rgba(42, 36, 28, 0.06), 0 18px 50px rgba(42, 36, 28, 0.12);
+  }
+
+  /* Subtle hand-rotation for scattered-album layouts. */
+  .tilt-l {
+    transform: rotate(-1.6deg);
+  }
+  .tilt-r {
+    transform: rotate(1.4deg);
+  }
+
+  /* Hairline divider used between editorial blocks. */
+  .rule {
+    @apply h-px w-full bg-cinema-text/10;
   }
 
   .ken-burns {
     animation: kenBurns 20s ease-in-out infinite alternate;
   }
 
-  .particle {
-    animation: floatParticle linear infinite;
+  /* Editorial drop cap — the opening letter set large in oxblood serif. */
+  .dropcap::first-letter {
+    @apply font-display text-cinema-accent;
+    float: left;
+    font-size: 3.3em;
+    line-height: 0.78;
+    padding: 0.05em 0.12em 0 0;
+    font-weight: 500;
+  }
+}
+
+/* Honour reduced-motion: drop all motion + the grain repaint cost. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Animated film grain — dark specks multiplied onto warm paper. */
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  30% {
+    transform: translate(3%, -15%);
+  }
+  50% {
+    transform: translate(-8%, 8%);
+  }
+  70% {
+    transform: translate(8%, 4%);
+  }
+  90% {
+    transform: translate(-3%, 12%);
   }
 }
 
@@ -44,17 +127,5 @@
   }
   100% {
     transform: scale(1.08) translate(-2%, -1%);
-  }
-}
-
-@keyframes floatParticle {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translateY(-24px) scale(1.2);
-    opacity: 0.5;
   }
 }

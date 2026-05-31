@@ -2,12 +2,9 @@
 
 import { motion } from "framer-motion";
 import { X, Check } from "lucide-react";
+import { ChapterHeading } from "./ChapterHeading";
 
-const notList = [
-  "AI assistant",
-  "Text-to-speech app",
-  "Voice wrapper",
-];
+const notList = ["AI assistant", "Text-to-speech app", "Voice wrapper"];
 
 const isList = [
   "Memory storytelling platform",
@@ -18,47 +15,49 @@ const isList = [
 
 export function Positioning() {
   return (
-    <section className="border-t border-white/5 py-24">
+    <section className="border-t border-cinema-accent/10 py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="font-display text-center text-3xl font-bold md:text-4xl">
-          Not another AI tool
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-cinema-muted">
-          Echoes makes voice the emotional engine — not a feature bolted onto
-          productivity software.
-        </p>
-        <div className="mt-14 grid gap-8 md:grid-cols-2">
+        <ChapterHeading
+          chapter="CH. 05"
+          kicker="The Position"
+          title="Not another AI tool"
+          subtitle="Echoes makes voice the emotional engine — not a feature bolted onto productivity software."
+        />
+
+        <div className="mt-16 grid gap-6 md:grid-cols-2">
           <motion.div
-            initial={{ opacity: 0, x: -12 }}
+            initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8"
+            transition={{ duration: 0.45 }}
+            className="rounded-lg border border-cinema-text/12 bg-cinema-text/[0.02] p-8"
           >
-            <p className="text-sm font-medium uppercase tracking-wider text-red-400/80">
-              Not
-            </p>
-            <ul className="mt-6 space-y-4">
+            <p className="film-label text-cinema-muted">Not</p>
+            <ul className="mt-7 space-y-4">
               {notList.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-cinema-muted">
-                  <X className="h-4 w-4 shrink-0 text-red-400/70" />
+                <li
+                  key={item}
+                  className="flex items-center gap-3 text-cinema-muted-dark line-through decoration-cinema-muted/40"
+                >
+                  <X className="h-4 w-4 shrink-0 text-cinema-muted-dark" strokeWidth={1.5} />
                   {item}
                 </li>
               ))}
             </ul>
           </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, x: 12 }}
+            initial={{ opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8"
+            transition={{ duration: 0.45 }}
+            className="rounded-lg border border-cinema-accent/30 bg-cinema-accent/[0.05] p-8 glow-ring"
           >
-            <p className="text-sm font-medium uppercase tracking-wider text-emerald-400/80">
-              Instead
-            </p>
-            <ul className="mt-6 space-y-4">
+            <p className="film-label">Instead</p>
+            <ul className="mt-7 space-y-4">
               {isList.map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <Check className="h-4 w-4 shrink-0 text-emerald-400" />
+                <li key={item} className="flex items-center gap-3 font-medium">
+                  <Check className="h-4 w-4 shrink-0 text-cinema-accent" strokeWidth={1.5} />
                   {item}
                 </li>
               ))}

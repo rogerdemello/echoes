@@ -138,9 +138,16 @@ export function DuetPlayer({
       stopAmbient();
       setIsPlaying(false);
     } else {
-      await audio.play();
-      if (ambientOn) startAmbient();
-      setIsPlaying(true);
+      try {
+        await audio.play();
+        if (ambientOn) startAmbient();
+        setIsPlaying(true);
+      } catch {
+        // src missing/expired or codec unsupported — don't crash the page
+        setIsPlaying(false);
+        stopAmbient();
+        notify("This conversation's audio is no longer available.", "error");
+      }
     }
   };
 

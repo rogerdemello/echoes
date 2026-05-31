@@ -2,56 +2,64 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Play, Sparkles } from "lucide-react";
+import { Play } from "lucide-react";
 import { Button } from "./ui/button";
-import { ParticleField } from "./ParticleField";
+
+const rise = {
+  hidden: { opacity: 0, y: 16 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden pt-24">
-      <ParticleField />
-      <motion.div
-        className="absolute inset-0 bg-hero-glow"
-        animate={{ opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 6, repeat: Infinity }}
-      />
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-6 pb-24 pt-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm text-cinema-muted"
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0 bg-hero-glow" />
+
+      <div className="relative mx-auto flex min-h-[92vh] max-w-4xl flex-col items-center justify-center px-6 py-32 text-center">
+        <motion.p
+          custom={0}
+          variants={rise}
+          initial="hidden"
+          animate="show"
+          className="film-label justify-center"
         >
-          <Sparkles className="h-4 w-4 text-cinema-accent-light" />
-          Digital memory preservation · Powered by Murf AI
-        </motion.div>
+          Echoes · An Archive of Feeling · Vol. I
+        </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display text-5xl font-bold leading-tight tracking-tight md:text-7xl"
+          custom={1}
+          variants={rise}
+          initial="hidden"
+          animate="show"
+          className="mt-8 font-display text-5xl font-medium leading-[1.06] tracking-[-0.01em] md:text-7xl"
         >
           Your memories
           <br />
-          <span className="text-gradient">deserve a voice.</span>
+          deserve <span className="italic text-cinema-accent-light">a voice.</span>
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 max-w-2xl text-lg text-cinema-muted md:text-xl"
+          custom={2}
+          variants={rise}
+          initial="hidden"
+          animate="show"
+          className="mt-8 max-w-xl text-lg leading-relaxed text-cinema-muted md:text-xl"
         >
-          Transform moments into cinematic narrated stories using emotionally
-          expressive AI voices. Preserve emotions, not just memories.
+          Echoes turns an ordinary memory into a narrated, cinematic story in an
+          emotionally expressive voice. We preserve not just how a moment looked —
+          but how it felt.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+          custom={3}
+          variants={rise}
+          initial="hidden"
+          animate="show"
+          className="mt-11 flex flex-wrap items-center justify-center gap-4"
         >
           <Link href="/create">
             <Button size="lg" className="gap-2">
@@ -66,28 +74,33 @@ export function Hero() {
           </Link>
         </motion.div>
 
+        {/* polaroid quote — a photo resting in the album */}
+        <motion.figure
+          initial={{ opacity: 0, y: 20, rotate: -3 }}
+          animate={{ opacity: 1, y: 0, rotate: -1.6 }}
+          transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="polaroid tilt-l mt-20 max-w-sm"
+        >
+          <div className="flex aspect-[4/3] items-center justify-center bg-cinema-surface-2 px-6 text-center">
+            <p className="font-display text-lg italic leading-relaxed text-cinema-text/80">
+              &ldquo;The last conversation I had with my grandfather was during a
+              train ride home…&rdquo;
+            </p>
+          </div>
+          <figcaption className="mt-4 text-center font-mono text-[0.65rem] uppercase tracking-[0.18em] text-cinema-muted">
+            → Narrated in seconds
+          </figcaption>
+        </motion.figure>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-12 max-w-2xl font-display text-lg text-cinema-accent-light/90"
+          transition={{ delay: 0.85, duration: 0.6 }}
+          className="mt-16 max-w-md font-display text-base italic text-cinema-muted"
         >
           &ldquo;Photos preserve how moments looked. Echoes preserves how they
           felt.&rdquo;
         </motion.p>
-
-        <motion.blockquote
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.85 }}
-          className="mt-8 max-w-xl rounded-2xl glass p-6 text-left text-sm italic text-cinema-muted"
-        >
-          &ldquo;The last conversation I had with my grandfather was during a train
-          ride home...&rdquo;
-          <footer className="mt-3 not-italic text-cinema-accent-light">
-            → Cinematic Murf narration in seconds
-          </footer>
-        </motion.blockquote>
       </div>
     </section>
   );

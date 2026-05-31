@@ -50,6 +50,7 @@ export function StoryPlayer({
   const [currentLine, setCurrentLine] = useState(0);
   const [ambientOn, setAmbientOn] = useState(true);
   const [showTitle, setShowTitle] = useState(true);
+  const [audioError, setAudioError] = useState(false);
 
   const activeAudio = audioOverride ?? story.audioUrl;
   const narration = displayText ?? story.enhancedStory;
@@ -115,6 +116,7 @@ export function StoryPlayer({
     onPlayingChange?.(false);
     setProgress(0);
     setCurrentLine(0);
+    setAudioError(false);
     stopAmbient();
   }, [activeAudio, narration, stopAmbient, onPlayingChange]);
 
@@ -148,10 +150,19 @@ export function StoryPlayer({
       setIsPlaying(false);
       onPlayingChange?.(false);
     } else {
-      await audio.play();
-      if (ambientOn) startAmbient();
-      setIsPlaying(true);
-      onPlayingChange?.(true);
+      try {
+        await audio.play();
+        if (ambientOn) startAmbient();
+        setIsPlaying(true);
+        onPlayingChange?.(true);
+      } catch {
+        // src missing/expired or codec unsupported — fail to the regenerate UI
+        setAudioError(true);
+        setIsPlaying(false);
+        onPlayingChange?.(false);
+        stopAmbient();
+        notify("This memory's audio is no longer available — regenerate it.", "error");
+      }
     }
   };
 
@@ -285,13 +296,14 @@ export function StoryPlayer({
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          {activeAudio ? (
+          {activeAudio && !audioError ? (
             <>
               <audio
                 ref={audioRef}
                 key={activeAudio}
                 src={activeAudio}
                 preload="metadata"
+                onError={() => setAudioError(true)}
               />
               <Button
                 size="lg"
@@ -336,7 +348,11 @@ export function StoryPlayer({
             </>
           ) : (
             <div className="text-center">
-              <p className="text-cinema-muted mb-4">Voice narration not available yet.</p>
+              <p className="text-cinema-muted mb-4">
+                {audioError
+                  ? "This memory's audio is no longer available."
+                  : "Voice narration not available yet."}
+              </p>
               {onRegenerateVoice && (
                 <Button onClick={onRegenerateVoice} disabled={isRegenerating}>
                   {isRegenerating ? "Generating..." : "Generate Voice"}
