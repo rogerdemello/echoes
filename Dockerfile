@@ -16,6 +16,8 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Ensure public/ exists (this project ships none) so the runner COPY succeeds.
+RUN mkdir -p public
 RUN npm run build
 
 # ---- runner ----
@@ -36,7 +38,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules/ffmpeg-static ./node_modules/ffmpeg-static
 RUN chmod +x ./node_modules/ffmpeg-static/ffmpeg || true
 
-# Writable data dirs (overlaid by a persistent disk in production).
+# Writable data dirs (ephemeral on free tier; mount a disk here for durability).
 RUN mkdir -p ./data/audio ./data/uploads
 
 EXPOSE 3000
