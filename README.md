@@ -2,11 +2,27 @@
 
 **Your memories deserve a voice.**
 
-Echoes transforms memories into emotionally narrated cinematic stories using AI storytelling and Murf voice synthesis.
-
-Built for the Murf AI Buildathon.
+Echoes transforms a plain memory into an emotionally narrated, cinematic story —
+spoken aloud in an expressive AI voice. Built for the Murf AI Buildathon.
 
 > *"Photos preserve how moments looked. Echoes preserves how they felt."*
+
+**▶ Live demo:** https://echoes-ellg.onrender.com — open it, then click **Demo → Run dual-voice demo**.
+*(Free hosting sleeps after ~15 min idle; the first visit wakes it in ~30–50s.)*
+
+Echoes is dressed like a **documentary archive** — bone paper, ink type, oxblood
+accents, and film grain — so it feels like a treasured family album, not another AI app.
+
+## Why Echoes
+
+We save photos, videos, and chat logs — but none of them keep the *feeling* of a
+moment: the warmth in someone's voice, the atmosphere of being there. When the
+people in our memories are gone, so is the sound of them.
+
+Echoes gives a memory back its voice. You write (or speak) a moment; AI turns it
+into a short cinematic narration tuned to its emotion; and **Murf speaks it aloud**
+— even as a conversation between two people, in two distinct voices. It's less a
+tool and more a way to *hear* your past.
 
 ## ✦ Signature feature — Dual-Voice Legacy Mode
 
@@ -33,6 +49,17 @@ Try it instantly: open `/demo` → **Run dual-voice demo**, or `/create?duet=1`.
 - 🧬 **Memory DNA** — AI insight into the emotional themes across your stories
 - 🎤 **Voice-note input** — speak your memory; Gemini transcribes it
 - 🔗 **Share + export** — public links, MP3/text/JSON download, WhatsApp share
+
+## How it works
+
+1. **Share a memory** — type it, or record a voice note (Gemini transcribes it to text).
+2. **AI writes the story** — Gemini rewrites your rough memory into cinematic narration, in the style you pick.
+3. **Emotion sets the mood** — the tone (nostalgia, joy, grief, hope) is detected and mapped to a Murf voice style and an ambient music bed.
+4. **Murf gives it a voice** — expressive narration is synthesised — one narrator, or *two* in Dual-Voice Legacy Mode.
+5. **Cinematic playback** — narration is mixed with the ambient score, the text highlights in sync, and you get a shareable link.
+
+Every AI step has a graceful fallback (local templates / heuristics), so a missing
+key or a network blip never hard-fails the demo.
 
 ## Quick Start
 
@@ -161,6 +188,8 @@ curl -X POST http://localhost:3000/api/stories/STORY_ID/translate \
 5. **Close:** *"We didn't build another AI assistant. We gave memories a voice — and a reply."*
 
 ## Deployment (live public URL)
+
+**Live at https://echoes-ellg.onrender.com** (Render free tier).
 
 Echoes needs a real server (ffmpeg + local file storage), not serverless. Ship it
 as a Docker container — a `Dockerfile` and `render.yaml` blueprint are included.
