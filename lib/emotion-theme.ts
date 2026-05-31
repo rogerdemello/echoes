@@ -1,32 +1,35 @@
 import type { Emotion } from "./types";
 
+// Paper-tint themes — each emotion is a faint warm wash on bone, not a dark
+// gradient. glow = soft radial backdrop; ring = hairline border; gradient =
+// light top-down wash fading into the page surface.
 export const EMOTION_THEME: Record<
   Emotion,
   { glow: string; ring: string; gradient: string }
 > = {
   nostalgic: {
-    glow: "rgba(251, 191, 36, 0.2)",
-    ring: "border-amber-500/30",
-    gradient: "from-amber-900/20 via-cinema-bg to-cinema-bg",
+    glow: "rgba(176, 120, 44, 0.16)",
+    ring: "border-amber-800/20",
+    gradient: "from-amber-100/60 via-cinema-surface to-cinema-surface",
   },
   calm: {
-    glow: "rgba(96, 165, 250, 0.2)",
-    ring: "border-blue-500/30",
-    gradient: "from-blue-900/20 via-cinema-bg to-cinema-bg",
+    glow: "rgba(70, 110, 150, 0.14)",
+    ring: "border-sky-900/15",
+    gradient: "from-sky-100/60 via-cinema-surface to-cinema-surface",
   },
   hopeful: {
-    glow: "rgba(52, 211, 153, 0.2)",
-    ring: "border-emerald-500/30",
-    gradient: "from-emerald-900/20 via-cinema-bg to-cinema-bg",
+    glow: "rgba(60, 130, 90, 0.14)",
+    ring: "border-emerald-900/15",
+    gradient: "from-emerald-100/60 via-cinema-surface to-cinema-surface",
   },
   dramatic: {
-    glow: "rgba(239, 68, 68, 0.15)",
-    ring: "border-red-500/30",
-    gradient: "from-red-950/30 via-cinema-bg to-cinema-bg",
+    glow: "rgba(110, 43, 43, 0.18)",
+    ring: "border-cinema-accent/30",
+    gradient: "from-red-100/60 via-cinema-surface to-cinema-surface",
   },
   joyful: {
-    glow: "rgba(167, 139, 250, 0.25)",
-    ring: "border-violet-500/30",
-    gradient: "from-violet-900/20 via-cinema-bg to-cinema-bg",
+    glow: "rgba(180, 90, 50, 0.16)",
+    ring: "border-orange-800/20",
+    gradient: "from-orange-100/60 via-cinema-surface to-cinema-surface",
   },
 };

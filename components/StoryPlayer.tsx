@@ -206,7 +206,7 @@ export function StoryPlayer({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border bg-gradient-to-b ${theme.gradient} ${theme.ring} glow-ring`}
+      className={`relative overflow-hidden rounded-lg border bg-gradient-to-b ${theme.gradient} ${theme.ring} glow-ring`}
     >
       {/* Ken Burns background — photo or gradient */}
       {photoUrl ? (
@@ -274,7 +274,7 @@ export function StoryPlayer({
           ))}
         </div>
 
-        <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
+        <div className="mt-4 h-1 overflow-hidden rounded-full bg-cinema-text/10">
           <div
             className="h-full bg-cinema-accent transition-all duration-150"
             style={{ width: `${progress}%` }}

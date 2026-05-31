@@ -74,7 +74,7 @@ export function Constellation() {
       wordCount: s.wordCount ?? 120,
       position: hashToSpherePoint(s.id, s.emotion),
       size: sizeFromWordCount(s.wordCount ?? 120),
-      color: EMOTION_HEX[s.emotion] ?? "#a78bfa",
+      color: EMOTION_HEX[s.emotion] ?? "#C8A45A",
     }));
   }, [stories]);
 
@@ -84,11 +84,11 @@ export function Constellation() {
     Boolean(emotionFilter && n.emotion !== emotionFilter);
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-cinema-bg">
-      {/* Background gradient */}
+    <div className="fixed inset-0 overflow-hidden bg-cinema-night">
+      {/* Background gradient — warm gold bloom against the night */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.18),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(201,168,106,0.14),transparent_60%)]"
       />
 
       {/* HUD top-left */}
@@ -102,11 +102,11 @@ export function Constellation() {
           <h1 className="font-display text-3xl font-semibold tracking-tight text-white">
             Memory Constellation
           </h1>
-          <p className="mt-1 max-w-md text-sm text-cinema-muted">
+          <p className="mt-1 max-w-md text-sm text-stone-300">
             Every Echo lives here as a star. Connected lines mean shared
             emotional themes.
           </p>
-          <p className="mt-2 text-xs text-cinema-muted/70">
+          <p className="mt-2 text-xs text-stone-300/70">
             {nodes.length} {nodes.length === 1 ? "memory" : "memories"}
             {" · "}
             {edges.length} {edges.length === 1 ? "connection" : "connections"}
@@ -125,7 +125,7 @@ export function Constellation() {
             className={`rounded-full border px-3 py-1 text-xs transition-colors ${
               emotionFilter === null
                 ? "border-cinema-accent bg-cinema-accent/20 text-white"
-                : "border-white/10 bg-white/5 text-cinema-muted hover:border-white/20"
+                : "border-white/10 bg-white/5 text-stone-300 hover:border-white/20"
             }`}
           >
             All
@@ -140,7 +140,7 @@ export function Constellation() {
               className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                 emotionFilter === e.id
                   ? "text-white"
-                  : "border-white/10 bg-white/5 text-cinema-muted hover:border-white/20"
+                  : "border-white/10 bg-white/5 text-stone-300 hover:border-white/20"
               }`}
               style={
                 emotionFilter === e.id
@@ -166,7 +166,7 @@ export function Constellation() {
       {!loading && !error && nodes.length === 0 && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 px-6 text-center">
           <SparklesIcon className="h-8 w-8 text-cinema-accent-light" />
-          <p className="text-cinema-muted">
+          <p className="text-stone-300">
             Your constellation is empty. Create your first Echo.
           </p>
         </div>

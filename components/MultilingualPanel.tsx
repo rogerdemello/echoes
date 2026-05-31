@@ -45,10 +45,10 @@ export function MultilingualPanel({
   };
 
   return (
-    <div className="rounded-2xl glass p-6">
+    <div className="rounded-lg glass p-6">
       <div className="flex items-center gap-2">
-        <Globe className="h-5 w-5 text-cinema-accent-light" />
-        <h3 className="font-display text-lg font-semibold">Multilingual family mode</h3>
+        <Globe className="h-5 w-5 text-cinema-accent" />
+        <h3 className="font-display text-xl font-medium">Multilingual family mode</h3>
       </div>
       <p className="mt-1 text-sm text-cinema-muted">
         Generate the same memory in other languages for grandparents, parents, and kids.
@@ -60,7 +60,7 @@ export function MultilingualPanel({
           return (
             <div
               key={lang.id}
-              className="flex items-center justify-between rounded-xl border border-white/10 px-4 py-3"
+              className="flex items-center justify-between rounded-xl border border-cinema-text/10 px-4 py-3"
             >
               <span className="text-sm font-medium">{lang.label}</span>
               <div className="flex gap-2">
@@ -95,7 +95,7 @@ export function MultilingualPanel({
         })}
       </div>
 
-      {error && <p className="mt-3 text-sm text-amber-400">{error}</p>}
+      {error && <p className="mt-3 text-sm text-amber-700">{error}</p>}
     </div>
   );
 }

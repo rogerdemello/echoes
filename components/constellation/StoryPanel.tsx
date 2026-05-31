@@ -64,12 +64,10 @@ export function StoryPanel({ storyId, onClose }: StoryPanelProps) {
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ type: "spring", damping: 28, stiffness: 220 }}
-          className="fixed right-0 top-0 z-40 flex h-full w-full max-w-md flex-col border-l border-white/10 bg-cinema-bg/95 shadow-2xl backdrop-blur-xl"
+          className="fixed right-0 top-0 z-40 flex h-full w-full max-w-md flex-col border-l border-cinema-text/10 bg-cinema-bg/97 shadow-2xl backdrop-blur-xl"
         >
-          <header className="flex items-center justify-between border-b border-white/5 px-6 py-4">
-            <h2 className="font-display text-sm font-medium tracking-wide text-cinema-muted">
-              Memory
-            </h2>
+          <header className="flex items-center justify-between border-b border-cinema-text/10 px-6 py-4">
+            <h2 className="film-label">Memory</h2>
             <div className="flex items-center gap-1">
               {story && (
                 <Link href={`/story/${story.id}`} aria-label="Open full story">
@@ -83,7 +81,7 @@ export function StoryPanel({ storyId, onClose }: StoryPanelProps) {
                 type="button"
                 onClick={onClose}
                 aria-label="Close panel"
-                className="rounded-full p-2 text-cinema-muted hover:bg-white/10 hover:text-white"
+                className="rounded-full p-2 text-cinema-muted hover:bg-cinema-text/10 hover:text-cinema-text"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -96,7 +94,7 @@ export function StoryPanel({ storyId, onClose }: StoryPanelProps) {
               </div>
             )}
             {error && (
-              <p className="text-sm text-red-300">{error}</p>
+              <p className="text-sm text-red-800">{error}</p>
             )}
             {story && !loading && (
               <StoryPlayer story={story} autoPlay={false} />

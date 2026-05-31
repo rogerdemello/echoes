@@ -50,8 +50,8 @@ export function ServiceHealth() {
           key={item.label}
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs ${
             item.ok
-              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-              : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+              ? "bg-emerald-700/[0.08] text-emerald-800 border border-emerald-800/20"
+              : "bg-amber-700/[0.08] text-amber-800 border border-amber-800/20"
           }`}
         >
           {item.ok ? (

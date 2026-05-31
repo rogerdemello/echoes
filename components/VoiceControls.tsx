@@ -38,8 +38,8 @@ export function VoiceControls({ story, onUpdated }: VoiceControlsProps) {
   };
 
   return (
-    <div className="rounded-2xl glass p-6">
-      <h3 className="font-display text-lg font-semibold">Live voice switching</h3>
+    <div className="rounded-lg glass p-6">
+      <h3 className="font-display text-xl font-medium">Live voice switching</h3>
       <p className="mt-1 text-sm text-cinema-muted">
         Change emotion, language, or narrator — then regenerate with Murf.
       </p>
@@ -55,8 +55,8 @@ export function VoiceControls({ story, onUpdated }: VoiceControlsProps) {
                 onClick={() => setEmotion(em.id)}
                 className={`rounded-full px-3 py-1.5 text-xs transition-all ${
                   emotion === em.id
-                    ? "bg-cinema-accent text-white"
-                    : "glass hover:bg-white/10"
+                    ? "bg-cinema-accent text-cinema-bg"
+                    : "glass-warm hover:border-cinema-accent/40"
                 }`}
               >
                 {em.label}
@@ -75,8 +75,8 @@ export function VoiceControls({ story, onUpdated }: VoiceControlsProps) {
                 onClick={() => setLanguage(lang.id)}
                 className={`rounded-full px-3 py-1.5 text-xs transition-all ${
                   language === lang.id
-                    ? "bg-cinema-accent text-white"
-                    : "glass hover:bg-white/10"
+                    ? "bg-cinema-accent text-cinema-bg"
+                    : "glass-warm hover:border-cinema-accent/40"
                 }`}
               >
                 {lang.label}
@@ -90,7 +90,7 @@ export function VoiceControls({ story, onUpdated }: VoiceControlsProps) {
           <select
             value={narrator}
             onChange={(e) => setNarrator(e.target.value as NarratorPersona)}
-            className="w-full rounded-xl border border-white/10 bg-cinema-surface px-3 py-2 text-sm focus:border-cinema-accent focus:outline-none"
+            className="w-full rounded-xl border border-cinema-text/15 bg-cinema-surface px-3 py-2 text-sm focus:border-cinema-accent focus:outline-none"
           >
             {NARRATORS.map((n) => (
               <option key={n.id} value={n.id}>
@@ -101,7 +101,7 @@ export function VoiceControls({ story, onUpdated }: VoiceControlsProps) {
         </div>
       </div>
 
-      {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-800">{error}</p>}
 
       <Button className="mt-4 w-full gap-2" onClick={applyVoice} disabled={loading}>
         {loading ? (

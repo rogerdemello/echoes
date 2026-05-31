@@ -70,10 +70,10 @@ export function MemoryDNA({ story }: MemoryDNAProps) {
 
   if (loading) {
     return (
-      <section className="rounded-3xl glass p-6 animate-pulse">
-        <div className="h-5 w-40 rounded bg-white/10" />
-        <div className="mt-4 h-4 w-full rounded bg-white/10" />
-        <div className="mt-2 h-4 w-2/3 rounded bg-white/10" />
+      <section className="rounded-lg glass p-6 animate-pulse">
+        <div className="h-5 w-40 rounded bg-cinema-text/10" />
+        <div className="mt-4 h-4 w-full rounded bg-cinema-text/10" />
+        <div className="mt-2 h-4 w-2/3 rounded bg-cinema-text/10" />
       </section>
     );
   }
@@ -84,12 +84,12 @@ export function MemoryDNA({ story }: MemoryDNAProps) {
     <motion.section
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl border border-cinema-accent/20 bg-gradient-to-br from-cinema-accent/10 to-transparent p-6"
+      className="rounded-lg border border-cinema-accent/20 bg-gradient-to-br from-cinema-accent/[0.06] to-transparent p-6"
     >
       <div className="flex items-center gap-2">
-        <Dna className="h-5 w-5 text-cinema-accent-light" />
-        <h2 className="font-display text-lg font-semibold">Memory DNA</h2>
-        <Sparkles className="h-4 w-4 text-cinema-accent-light/60" />
+        <Dna className="h-5 w-5 text-cinema-accent" />
+        <h2 className="font-display text-xl font-medium">Memory DNA</h2>
+        <Sparkles className="h-4 w-4 text-cinema-accent/60" />
       </div>
       <p className="mt-4 text-lg font-medium leading-relaxed text-cinema-text">
         {dna.insight}

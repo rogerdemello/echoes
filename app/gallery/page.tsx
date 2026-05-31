@@ -35,7 +35,8 @@ export default function GalleryPage() {
     <div className="mx-auto max-w-4xl px-6 pb-24 pt-28">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-3xl font-bold">Your Echoes</h1>
+          <span className="film-label">The Archive</span>
+          <h1 className="mt-3 font-display text-4xl font-medium">Your Echoes</h1>
           <p className="mt-2 text-cinema-muted">
             Every memory you&apos;ve transformed into a cinematic story.
           </p>
@@ -53,7 +54,7 @@ export default function GalleryPage() {
           Loading memories...
         </p>
       ) : stories.length === 0 ? (
-        <div className="mt-16 rounded-3xl glass p-12 text-center">
+        <div className="mt-16 rounded-lg glass p-12 text-center">
           <p className="text-cinema-muted">No stories yet. Create your first Echo.</p>
           <Link href="/create">
             <Button className="mt-6">Create Your Story</Button>
@@ -73,7 +74,7 @@ export default function GalleryPage() {
               >
                 <Link
                   href={`/story/${story.id}`}
-                  className="block overflow-hidden rounded-2xl glass transition-colors hover:border-cinema-accent/30 hover:bg-white/5"
+                  className="block overflow-hidden rounded-lg glass-warm transition-colors hover:border-cinema-accent/40"
                 >
                   {story.photoUrl && (
                     // eslint-disable-next-line @next/next/no-img-element

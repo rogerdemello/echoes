@@ -32,12 +32,12 @@ export function StoryTimeline({
   const goNext = () => onSeekToPage(Math.min(pages.length - 1, activePage + 1));
 
   return (
-    <section className="rounded-3xl glass p-6">
+    <section className="rounded-lg glass p-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-cinema-accent-light" />
+          <BookOpen className="h-5 w-5 text-cinema-accent" />
           <div>
-            <h2 className="font-display text-lg font-semibold">Storybook</h2>
+            <h2 className="font-display text-xl font-medium">Storybook</h2>
             <p className="text-xs text-cinema-muted">
               {pages.length} chapters · tap to jump in narration
             </p>
@@ -78,7 +78,7 @@ export function StoryTimeline({
                 ? "bg-cinema-accent"
                 : i < activePage
                   ? "bg-cinema-accent/40"
-                  : "bg-white/10"
+                  : "bg-cinema-text/10"
             }`}
             aria-label={`Chapter ${i + 1}`}
           />
@@ -98,11 +98,11 @@ export function StoryTimeline({
               transition={{ delay: i * 0.05 }}
               className={`min-w-[260px] max-w-[300px] shrink-0 snap-center rounded-2xl border p-5 text-left transition-all ${
                 isActive
-                  ? "border-cinema-accent bg-cinema-accent/15 ring-1 ring-cinema-accent/50"
-                  : "border-white/10 bg-white/5 hover:border-white/20"
+                  ? "border-cinema-accent bg-cinema-accent/10 ring-1 ring-cinema-accent/40"
+                  : "border-cinema-text/10 bg-cinema-text/[0.03] hover:border-cinema-accent/30"
               }`}
             >
-              <span className="text-xs font-medium uppercase tracking-wider text-cinema-accent-light">
+              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-cinema-accent-light">
                 Chapter {i + 1}
                 {isActive && isPlaying && (
                   <span className="ml-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-cinema-accent-light" />

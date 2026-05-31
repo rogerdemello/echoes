@@ -60,8 +60,8 @@ export function ExportPanel({
   };
 
   return (
-    <section className="rounded-3xl glass p-6">
-      <h2 className="font-display text-lg font-semibold">Judge export pack</h2>
+    <section className="rounded-lg glass p-6">
+      <h2 className="font-display text-xl font-medium">Judge export pack</h2>
       <p className="mt-1 text-sm text-cinema-muted">
         Download assets for offline demos and presentations.
       </p>

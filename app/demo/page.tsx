@@ -140,7 +140,7 @@ export default function DemoPage() {
         )}
 
         {error && (
-          <div className="mt-8 rounded-xl bg-red-500/10 p-4 text-sm text-red-400">
+          <div className="mt-8 rounded-xl border border-red-800/20 bg-red-800/[0.06] p-4 text-sm text-red-800">
             {error}
             <Link href="/create" className="mt-4 block text-cinema-accent-light">
               Try manual create instead

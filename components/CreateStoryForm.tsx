@@ -300,10 +300,10 @@ export function CreateStoryForm() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl glass p-12 text-center"
+        className="flex min-h-[400px] flex-col items-center justify-center rounded-lg glass p-12 text-center"
       >
-        <Loader2 className="h-12 w-12 animate-spin text-cinema-accent-light" />
-        <p className="mt-6 font-display text-xl font-semibold">
+        <Loader2 className="h-12 w-12 animate-spin text-cinema-accent" />
+        <p className="mt-6 font-display text-2xl font-medium">
           {generatingSteps[stepIndex]}
         </p>
         <p className="mt-2 text-sm text-cinema-muted">
@@ -321,7 +321,7 @@ export function CreateStoryForm() {
           type="button"
           onClick={() => setMode("solo")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm transition-all ${
-            mode === "solo" ? "bg-cinema-accent text-white" : "text-cinema-muted"
+            mode === "solo" ? "bg-cinema-accent text-cinema-bg" : "text-cinema-muted"
           }`}
         >
           Single narrator
@@ -330,7 +330,7 @@ export function CreateStoryForm() {
           type="button"
           onClick={() => setMode("duet")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm transition-all ${
-            mode === "duet" ? "bg-cinema-accent text-white" : "text-cinema-muted"
+            mode === "duet" ? "bg-cinema-accent text-cinema-bg" : "text-cinema-muted"
           }`}
         >
           <Users className="h-4 w-4" />
@@ -356,8 +356,8 @@ export function CreateStoryForm() {
                 onClick={() => applyDuetPreset(p.id)}
                 className={`rounded-full px-3 py-1.5 text-xs transition-all ${
                   duetPreset === p.id
-                    ? "bg-cinema-accent text-white"
-                    : "glass hover:bg-white/10"
+                    ? "bg-cinema-accent text-cinema-bg"
+                    : "glass-warm hover:border-cinema-accent/40"
                 }`}
               >
                 {p.label}
@@ -391,7 +391,7 @@ export function CreateStoryForm() {
                   value={col.name}
                   onChange={(e) => col.setName(e.target.value)}
                   placeholder="Name (e.g. Grandfather)"
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-cinema-surface px-3 py-2 text-sm text-cinema-text placeholder:text-cinema-muted/50 focus:border-cinema-accent focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-cinema-text/15 bg-cinema-surface px-3 py-2 text-sm text-cinema-text placeholder:text-cinema-muted/50 focus:border-cinema-accent focus:outline-none"
                 />
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   {NARRATORS.map((n) => (
@@ -402,7 +402,7 @@ export function CreateStoryForm() {
                       className={`rounded-lg border px-2 py-1.5 text-left text-xs transition-all ${
                         col.value === n.id
                           ? "border-cinema-accent bg-cinema-accent/10"
-                          : "border-white/10 hover:border-white/20"
+                          : "border-cinema-text/10 hover:border-cinema-accent/30"
                       }`}
                     >
                       {n.label}
@@ -414,7 +414,7 @@ export function CreateStoryForm() {
           </div>
 
           {narratorA === narratorB && (
-            <p className="mt-3 text-xs text-amber-400">
+            <p className="mt-3 text-xs text-amber-700">
               Tip: pick two different voices so the speakers sound distinct.
             </p>
           )}
@@ -427,7 +427,7 @@ export function CreateStoryForm() {
           type="button"
           onClick={() => setInputMode("text")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm transition-all ${
-            inputMode === "text" ? "bg-cinema-accent text-white" : "text-cinema-muted"
+            inputMode === "text" ? "bg-cinema-accent text-cinema-bg" : "text-cinema-muted"
           }`}
         >
           <Type className="h-4 w-4" />
@@ -437,7 +437,7 @@ export function CreateStoryForm() {
           type="button"
           onClick={() => setInputMode("voice")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm transition-all ${
-            inputMode === "voice" ? "bg-cinema-accent text-white" : "text-cinema-muted"
+            inputMode === "voice" ? "bg-cinema-accent text-cinema-bg" : "text-cinema-muted"
           }`}
         >
           <Mic className="h-4 w-4" />
@@ -446,7 +446,7 @@ export function CreateStoryForm() {
       </div>
 
       {inputMode === "voice" ? (
-        <div className="rounded-2xl border border-dashed border-white/20 p-8 text-center">
+        <div className="rounded-2xl border border-dashed border-cinema-text/25 p-8 text-center">
           <input
             ref={fileInputRef}
             type="file"
@@ -502,7 +502,7 @@ export function CreateStoryForm() {
           }}
         />
         {photoPreview ? (
-          <div className="relative mt-3 overflow-hidden rounded-2xl border border-white/10">
+          <div className="relative mt-3 overflow-hidden rounded-2xl border border-cinema-text/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={photoPreview}
@@ -569,13 +569,13 @@ export function CreateStoryForm() {
             </Button>
           </div>
         </div>
-        <div className="mt-3 -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 scrollbar-thin scrollbar-thumb-white/10">
+        <div className="mt-3 -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 scrollbar-thin scrollbar-thumb-cinema-text/10">
           {MEMORY_PROMPTS.map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => applyPrompt(p)}
-              className="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-cinema-muted transition-colors hover:border-cinema-accent/40 hover:bg-cinema-accent/10 hover:text-cinema-text"
+              className="shrink-0 rounded-full border border-cinema-text/10 bg-cinema-text/[0.03] px-3 py-1.5 text-xs text-cinema-muted transition-colors hover:border-cinema-accent/40 hover:bg-cinema-accent/10 hover:text-cinema-text"
             >
               {p}
             </button>
@@ -587,7 +587,7 @@ export function CreateStoryForm() {
           onChange={(e) => setOriginalText(e.target.value)}
           placeholder="My grandfather taught me cycling when I was 7..."
           rows={6}
-          className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-cinema-surface px-4 py-3 text-cinema-text placeholder:text-cinema-muted/50 focus:border-cinema-accent focus:outline-none focus:ring-1 focus:ring-cinema-accent"
+          className="mt-2 w-full resize-none rounded-2xl border border-cinema-text/15 bg-cinema-surface px-4 py-3 text-cinema-text placeholder:text-cinema-muted/50 focus:border-cinema-accent focus:outline-none focus:ring-1 focus:ring-cinema-accent"
         />
         {preview && (
           <div className="mt-3 rounded-xl border border-cinema-accent/30 bg-cinema-accent/5 p-4">
@@ -624,7 +624,7 @@ export function CreateStoryForm() {
               className={`rounded-xl border p-4 text-left transition-all ${
                 storyStyle === style.id
                   ? "border-cinema-accent bg-cinema-accent/10"
-                  : "border-white/10 hover:border-white/20"
+                  : "border-cinema-text/10 hover:border-cinema-accent/30"
               }`}
             >
               <span className="font-medium">{style.label}</span>
@@ -644,8 +644,8 @@ export function CreateStoryForm() {
               onClick={() => setEmotion(em.id)}
               className={`rounded-full px-4 py-2 text-sm transition-all ${
                 emotion === em.id
-                  ? "bg-cinema-accent text-white"
-                  : "glass hover:bg-white/10"
+                  ? "bg-cinema-accent text-cinema-bg"
+                  : "glass-warm hover:border-cinema-accent/40"
               }`}
             >
               {em.label}
@@ -665,8 +665,8 @@ export function CreateStoryForm() {
               onClick={() => setLanguage(lang.id)}
               className={`rounded-full px-4 py-2 text-sm transition-all ${
                 language === lang.id
-                  ? "bg-cinema-accent text-white"
-                  : "glass hover:bg-white/10"
+                  ? "bg-cinema-accent text-cinema-bg"
+                  : "glass-warm hover:border-cinema-accent/40"
               }`}
             >
               {lang.label}
@@ -687,7 +687,7 @@ export function CreateStoryForm() {
                 className={`rounded-xl border px-4 py-3 text-left text-sm transition-all ${
                   narrator === n.id
                     ? "border-cinema-accent bg-cinema-accent/10"
-                    : "border-white/10 hover:border-white/20"
+                    : "border-cinema-text/10 hover:border-cinema-accent/30"
                 }`}
               >
                 {n.label}
@@ -698,7 +698,7 @@ export function CreateStoryForm() {
       )}
 
       {error && (
-        <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</p>
+        <p className="rounded-lg border border-red-800/20 bg-red-800/[0.06] px-4 py-3 text-sm text-red-800">{error}</p>
       )}
 
       <Button type="submit" size="lg" className="w-full gap-2">

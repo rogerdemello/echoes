@@ -9,8 +9,8 @@ const Constellation = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-screen items-center justify-center bg-cinema-bg">
-        <Loader2 className="h-8 w-8 animate-spin text-cinema-accent-light" />
+      <div className="flex h-screen items-center justify-center bg-cinema-night">
+        <Loader2 className="h-8 w-8 animate-spin text-cinema-accent" />
       </div>
     ),
   }

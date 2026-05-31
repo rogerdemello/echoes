@@ -199,7 +199,7 @@ export function DuetPlayer({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border bg-gradient-to-b ${theme.gradient} ${theme.ring} glow-ring`}
+      className={`relative overflow-hidden rounded-lg border bg-gradient-to-b ${theme.gradient} ${theme.ring} glow-ring`}
     >
       <div
         className="absolute inset-0 ken-burns opacity-30"
@@ -242,7 +242,7 @@ export function DuetPlayer({
           {story.title}
         </h1>
 
-        <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
+        <div className="mt-3 h-1 overflow-hidden rounded-full bg-cinema-text/10">
           <div
             className="h-full bg-cinema-accent transition-all duration-150"
             style={{ width: `${progress}%` }}
@@ -269,13 +269,13 @@ export function DuetPlayer({
                     isA ? "rounded-tl-sm" : "rounded-tr-sm"
                   } ${
                     active
-                      ? "border-cinema-accent bg-cinema-accent/15 shadow-lg shadow-cinema-accent/10"
-                      : "border-white/10 bg-white/5 opacity-70 hover:opacity-100"
+                      ? "border-cinema-accent bg-cinema-accent/10 shadow-sm"
+                      : "border-cinema-text/10 bg-cinema-text/[0.03] opacity-70 hover:opacity-100"
                   }`}
                 >
                   <span
-                    className={`block text-[11px] font-medium ${
-                      isA ? "text-cinema-accent-light" : "text-emerald-300"
+                    className={`block font-mono text-[10px] uppercase tracking-[0.15em] ${
+                      isA ? "text-cinema-accent-light" : "text-emerald-800"
                     }`}
                   >
                     {line.speakerName}

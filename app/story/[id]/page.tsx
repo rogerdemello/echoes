@@ -126,7 +126,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
   if (error || !story) {
     return (
       <div className="mx-auto max-w-lg px-6 pt-28 text-center">
-        <p className="text-red-400">{error || "Story not found"}</p>
+        <p className="text-red-800">{error || "Story not found"}</p>
         <Link
           href="/create"
           className="mt-4 inline-block text-cinema-accent-light hover:underline"
@@ -161,7 +161,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
             variant="ghost"
             size="sm"
             onClick={deleteStory}
-            className="gap-1 text-red-400"
+            className="gap-1 text-red-800"
           >
             <Trash2 className="h-4 w-4" />
             Delete

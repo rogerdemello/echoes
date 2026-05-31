@@ -45,17 +45,17 @@ export function BilingualPlayer({ story }: BilingualPlayerProps) {
   };
 
   return (
-    <div className="rounded-2xl glass p-6">
+    <div className="rounded-lg glass p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Globe className="h-5 w-5 text-cinema-accent-light" />
-        <h3 className="font-display text-lg font-semibold">Family mode — side by side</h3>
+        <Globe className="h-5 w-5 text-cinema-accent" />
+        <h3 className="font-display text-xl font-medium">Family mode — side by side</h3>
       </div>
       <p className="text-sm text-cinema-muted mb-6">
         Same memory, two languages. Perfect for sharing across generations.
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-white/10 p-4">
+        <div className="rounded-xl border border-cinema-text/10 p-4">
           <p className="text-xs font-medium text-cinema-muted mb-2">
             {primaryLang?.label ?? story.language}
           </p>
