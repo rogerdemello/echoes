@@ -2,14 +2,17 @@
 # Deploy: push this repo to GitHub, then "New + > Blueprint" on render.com and
 # point it at the repo. Set the secret env vars (sync:false) in the dashboard.
 #
-# The persistent disk at /app/data keeps stories.json, mixed audio, and uploaded
-# photos across restarts/deploys — essential because Murf audio URLs expire while
-# the locally mixed MP3 (served from /api/audio) does not.
+# FREE tier: no persistent disk (disks require a paid plan). Storage under
+# /app/data is ephemeral — generated stories/audio/photos reset on each restart
+# or redeploy, and the instance sleeps after ~15 min idle (first request then
+# cold-starts in ~30-50s). Live generation during a demo works fine.
+# For durability + always-on, upgrade to `plan: starter` and add a disk block:
+#   disk: { name: echoes-data, mountPath: /app/data, sizeGB: 1 }
 services:
   - type: web
     name: echoes
     runtime: docker
-    plan: starter # persistent disks require a paid instance
+    plan: free
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
@@ -26,7 +29,3 @@ services:
         sync: false
       - key: HOSTNAME
         value: 0.0.0.0
-    disk:
-      name: echoes-data
-      mountPath: /app/data
-      sizeGB: 1

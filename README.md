@@ -175,9 +175,10 @@ as a Docker container — a `Dockerfile` and `render.yaml` blueprint are include
    ```
 2. render.com → **New + → Blueprint** → select the repo (it reads `render.yaml`).
 3. Add the secret env vars (`MURF_AI_API_KEY`, `GEMINI_API_KEY`, `NEXT_PUBLIC_APP_URL`).
-4. The persistent disk at `/app/data` keeps stories, mixed audio, and photos across
-   deploys — important because raw Murf URLs expire, but the locally mixed MP3
-   (served from `/api/audio`) does not. Health check: `/api/health`.
+4. Free tier by default (`plan: free`, no disk). Storage under `/app/data` is
+   ephemeral — generated stories/audio reset on restart, and the instance sleeps
+   after ~15 min idle (wake it before a demo). For durability + always-on, set
+   `plan: starter` and add a `disk` mounted at `/app/data`. Health check: `/api/health`.
 
 **Local container test:**
 ```bash
